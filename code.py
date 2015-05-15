@@ -41,6 +41,28 @@ def vigDecode(string,key) :
     return res
 
 
+#Inspired by Enigma but simplified
+def eniCode(message,key) :
+    """
+    """
+    res=''
+    length=len(key)
+    i=0
+    for char in string :
+        res+=chr(key[(i+ord(char))%length])
+        i+=1
+    return res
+
+def eniDecode(message,key) :
+    res=''
+    length=len(key)
+    i=0
+    for char in string :
+        res+=chr(key[(i-ord(char))%length])
+        i+=1
+    return res
+
+
 #test
 
 print 'cesar code with value=a1234 and key=1'
@@ -55,6 +77,13 @@ codeValue = vigCode('a1234',[1,2])
 baseValue = vigDecode(codeValue,[1,2])
 print 'code :'
 print codeValue
+print 'decode :'
+print baseValue
+print 'Enigma code with value=a1234 and key='
+#codeValue = vigCode('a1234',)
+#baseValue = vigDecode(codeValue,)
+print 'code :'
+#print codeValue
 print 'decode :'
 print baseValue
 
