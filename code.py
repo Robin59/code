@@ -6,13 +6,13 @@
 def cesarCode(string,key):
     res = ''
     for char in string :
-    	res+=chr(ord(char)+key)
+    	res+=chr((ord(char)+key)%256)
     return res
 
 def cesarDecode(string,key):
     res = ''
     for char in string :
-    	res+=chr(ord(char)-key)
+    	res+=chr((ord(char)-key)%256)
     return res
 
 #Vigenere's method
@@ -24,7 +24,7 @@ def vigCode(string,key) :
     length=len(key)
     i=0
     for char in string :
-        res+=chr(ord(char)+key[i%length])
+        res+=chr((ord(char)+key[i%length])%256)
         i+=1
     return res
 
@@ -36,7 +36,7 @@ def vigDecode(string,key) :
     length=len(key)
     i=0
     for char in string :
-        res+=chr(ord(char)-key[i%length])
+        res+=chr((ord(char)-key[i%length])%256)
         i+=1
     return res
 
@@ -49,7 +49,7 @@ def eniCode(message,key) :
     length=len(key)
     i=0
     for char in string :
-        res+=chr(key[(i+ord(char))%length])
+        res+=chr((key[(i+ord(char))%length])%256)
         i+=1
     return res
 
@@ -58,7 +58,7 @@ def eniDecode(message,key) :
     length=len(key)
     i=0
     for char in string :
-        res+=chr(key[(i-ord(char))%length])
+        res+=chr((key[(i-ord(char))%length])%256)
         i+=1
     return res
 
@@ -66,15 +66,15 @@ def eniDecode(message,key) :
 #test
 
 print 'cesar code with value=a1234 and key=1'
-codeValue = cesarCode('a1234',1)
-baseValue = cesarDecode(codeValue,1)
+codeValue = cesarCode('a1234',228)
+baseValue = cesarDecode(codeValue,228)
 print 'code :'
 print codeValue
 print 'decode :'
 print baseValue
 print 'Vigenere code with value=a1234 and key=[1,2]'
-codeValue = vigCode('a1234',[1,2])
-baseValue = vigDecode(codeValue,[1,2])
+codeValue = vigCode('a1234',[228,2])
+baseValue = vigDecode(codeValue,[228,2])
 print 'code :'
 print codeValue
 print 'decode :'
