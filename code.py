@@ -41,26 +41,33 @@ def vigDecode(string,key) :
     return res
 
 
-#Inspired by Enigma but simplified
-def eniCode(message,key) :
+#Enigma's cipher method
+def enigmaCode(string,key) :
     """
+    Inspire by enigma ciphers (not sure if it's exactly the same)
+    You need to use a bi-dimentional tab, the first dimension can be as long as you want and each tab on it is a ring of machin.
+    The second dimention must contain 256 unique numbers (as much as the ASCII code).
     """
     res=''
     length=len(key)
-    i=0
+    #on construit un tableau d'entier a 0, representant les mouvements des rings
+    i=[]
+    for x in range (0, length) :
+        i.append(0)
     for char in string :
-        res+=chr((key[(i+ord(char))%length])%256)
-        i+=1
+        temp=ord(char)
+        for x in range (0, length) :
+            temp=(key[x][(i[x]+temp)%256])
+            #The ring is turnning one step ahead if it's the first ring
+            #or if the previous ring make a complet turn
+            if(x==0 or i[x-1]%256==0):
+                i[x]+=1
+        res+=chr(temp)
     return res
 
-def eniDecode(message,key) :
-    res=''
-    length=len(key)
-    i=0
-    for char in string :
-        res+=chr((key[(i-ord(char))%length])%256)
-        i+=1
-    return res
+
+
+
 
 
 #test
@@ -79,11 +86,17 @@ print 'code :'
 print codeValue
 print 'decode :'
 print baseValue
+#enigma test
+eKey=[[],[]]
+for x in range(0,256):
+    eKey[0].append(x)
+    eKey[1].append(1)
 print 'Enigma code with value=a1234 and key='
-#codeValue = vigCode('a1234',)
-#baseValue = vigDecode(codeValue,)
+print eKey
+codeValue = enigmaCode('a1234',eKey)
+#baseValue = enigmaDecode(codeValue,eKey)
 print 'code :'
-#print codeValue
+print codeValue
 print 'decode :'
 print baseValue
 
