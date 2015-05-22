@@ -18,5 +18,3 @@ def enigmaKey (nbRings) :
     return key
 
 
-
-print enigmaKey(2)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-
+import tools
 
 #Cesar's method
 def cesarCode(string,key):
@@ -61,7 +61,7 @@ def enigmaCode(string,key) :
             temp=(key[x][(i[x]+temp)%256])
             #The ring is turnning one step ahead if it's the first ring
             #or if the previous ring make a complet turn
-            if(x==0 or i[x-1]%256==0):
+            if(x==0 or (i[x-1]!=0 and i[x-1]%256==0)):
                 i[x]+=1
         res+=chr(temp)
     return res
@@ -117,10 +117,7 @@ print codeValue
 print 'decode :'
 print baseValue
 #enigma test
-eKey=[[],[]]
-for x in range(0,256):
-    eKey[0].append(x)
-    eKey[1].append(x*2)
+eKey=tools.enigmaKey(4)
 print 'Enigma code with value=a1234'
 print eKey
 codeValue = enigmaCode('a1234',eKey)
