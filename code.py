@@ -46,14 +46,15 @@ def enigmaCode(string,key) :
     """
     Inspire by enigma ciphers (not sure if it's exactly the same)
     You need to use a bi-dimentional tab, the first dimension can be as long as you want and each tab on it is a ring of machin.
-    The second dimention must contain 256 unique numbers (as much as the ASCII code).
+    The second dimention must contain 256 unique numbers between 0 and 255 (as much as the ASCII code).
     """
     res=''
     length=len(key)
-    #on construit un tableau d'entier a 0, representant les mouvements des rings
+    #construction of a int table, all at 0, representing the position of the rings
     i=[]
     for x in range (0, length) :
         i.append(0)
+    #
     for char in string :
         temp=ord(char)
         for x in range (0, length) :
@@ -66,7 +67,36 @@ def enigmaCode(string,key) :
     return res
 
 
-
+def enigmaDecode(string,key) :
+    """
+    Use to decode a message using enigma cipher
+    Inspire by enigma ciphers (not sure if it's exactly the same)
+    You need to use a bi-dimentional tab, the first dimension can be as long as you want and each tab on it is a ring of machin.
+    The second dimention must contain 256 unique numbers between 0 and 255 (as much as the ASCII code).
+    """
+    res=''
+    length=len(key)
+    #construction of a int table, all at 0, representing the position of the rings
+    i=[]
+    for x in range (0, length) :
+        i.append(0)
+    #
+    for char in string :
+        temp=ord(char)
+        for x in range (length)[length::-1] :
+            #The ring is turnning one step ahead if the previous ring make a complet turn
+            if(x!=0 and i[x-1]!=0  and i[x-1]%256==0):
+                i[x]+=1
+            #searching the original value corresponding to result that we already have (temp)
+            value = 0
+            while (key[x][value]!=temp) :
+                value+=1
+            temp=(value-i[x])%256
+            #The ring is turnning one step ahead if it's the first ring
+            if(x==0 ):
+                i[x]+=1
+        res+=chr(temp)
+    return res
 
 
 
@@ -90,11 +120,11 @@ print baseValue
 eKey=[[],[]]
 for x in range(0,256):
     eKey[0].append(x)
-    eKey[1].append(1)
-print 'Enigma code with value=a1234 and key='
+    eKey[1].append(x*2)
+print 'Enigma code with value=a1234'
 print eKey
 codeValue = enigmaCode('a1234',eKey)
-#baseValue = enigmaDecode(codeValue,eKey)
+baseValue = enigmaDecode(codeValue,eKey)
 print 'code :'
 print codeValue
 print 'decode :'
