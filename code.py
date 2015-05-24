@@ -100,30 +100,3 @@ def enigmaDecode(string,key) :
 
 
 
-#test
-
-print 'cesar code with value=a1234 and key=1'
-codeValue = cesarCode('a1234',228)
-baseValue = cesarDecode(codeValue,228)
-print 'code :'
-print codeValue
-print 'decode :'
-print baseValue
-print 'Vigenere code with value=a1234 and key=[1,2]'
-codeValue = vigCode('a1234',[228,2])
-baseValue = vigDecode(codeValue,[228,2])
-print 'code :'
-print codeValue
-print 'decode :'
-print baseValue
-#enigma test
-eKey=tools.enigmaKey(4)
-print 'Enigma code with value=a1234'
-print eKey
-codeValue = enigmaCode('a1234',eKey)
-baseValue = enigmaDecode(codeValue,eKey)
-print 'code :'
-print codeValue
-print 'decode :'
-print baseValue
-
