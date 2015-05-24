@@ -18,3 +18,14 @@ def enigmaKey (nbRings) :
     return key
 
 
+#Create a key for the Vigenere cypher
+def vigKey (length) :
+    """
+    Create a key for the Vigenere cypher, 
+    length is the length of the key
+    """
+    key=[]
+    for i in range(length):
+        key.append(randint(0,255))
+    return key
+
