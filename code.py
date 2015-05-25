@@ -99,4 +99,26 @@ def enigmaDecode(string,key) :
     return res
 
 
+#DES Cypher
 
+PI= [[58,50,40,42,34,26,18,10,2],[60,52,44,36,28,20,12,4],[62,54,46,38,30,22,14,6],[64,56,48,40,32,24,16,8]]
+
+
+def DEScode(string,key) : 
+    lengthString = len(string)
+    # we need 64 bytes block,so if  we don't have a final block of 8 caracters, we complet it with  " " at the end of the String
+    while (lengthString%8 != 0) :
+        string+=(" ")
+        lengthString+=1
+    
+    for i in range(lengthString/8) :
+        #char are converted in binairy
+        init=''
+        for j in range(8) :
+            init+='{0:08b}'.format(ord(string[i*8+j]))
+        print init
+        #first permutation and splitting in 2 tabs of bytes
+
+
+
+DEScode(" 11", 0)
