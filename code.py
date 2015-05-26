@@ -101,8 +101,9 @@ def enigmaDecode(string,key) :
 
 #DES Cypher
 
-PI= [[58,50,40,42,34,26,18,10,2],[60,52,44,36,28,20,12,4],[62,54,46,38,30,22,14,6],[64,56,48,40,32,24,16,8]]
+PI= [58,50,40,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7]
 
+E=[32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1]
 
 def DEScode(string,key) : 
     lengthString = len(string)
@@ -116,9 +117,22 @@ def DEScode(string,key) :
         init=''
         for j in range(8) :
             init+='{0:08b}'.format(ord(string[i*8+j]))
-        print init
         #first permutation and splitting in 2 tabs of bytes
-
-
+        L=[]
+        R=[]
+        for j in range(32) :
+            L.append(init[PI[j]-1])
+        for j in range(32,64) :
+            R.append(init[PI[j]-1])
+        #now we're gonna do 16 permutations and transformations with 16 different keys on this blocks
+        for j in range(16) :
+            Lnext=[]#this is Ln+1 = Rn
+            Rnext=[]#this is Rn+1 the result of the permutation and transformation
+        #Lnext=R #copie?
+        #expension fonction E on the left part L
+        temp=[]
+        for l in E :
+            temp.append(L[l-1])
+        print temp
 
 DEScode(" 11", 0)
