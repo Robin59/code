@@ -194,7 +194,7 @@ This version is for a 64 bytes key (event if the security is like a 56 bytes key
     #creation of the 16 sub keys 
     for i in range(16) :
         #the left rotation 
-        if (i==1 or i==2 or i==9 or i==16) :
+        if (i==0 or i==1 or i==8 or i==15) :
             temp=U[0]
             for j in range(27):
                 U[j]=U[j+1]
