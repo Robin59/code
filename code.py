@@ -170,4 +170,57 @@ def DEScode(string,key) :
             res+=chr((finalTab[j*8]+finalTab[j*8+1]*2+finalTab[j*8+2]*4+finalTab[j*8+3]*8+finalTab[j*8+4]*16+finalTab[j*8+5]*32+finalTab[j*8+6]*64+finalTab[j*8+7]*128)%256)
     return res
 
+#The fonction is use to create the secondary key from primary key (for DES cypher)
+
+#First permutation table
+PC1 = [57,49,41,33,25,17,9,1,58,50,42,34,26,18,10,2,59,51,43,35,27,19,11,3,60,52,44,36,63,55,47,39,31,23,15,7,62,54,46,38,30,22,14,6,61,53,45,37,29,21,13,5,28,20,12,4]
+
+#
+PC2 = [14,17,11,24,1,5,3,28,15,6,21,10,23,19,12,4,26,8,16,7,27,20,13,2,41,52,31,37,47,55,30,40,51,45,33,48,44,49,39,56,34,53,46,42,50,36,29,32]
+
+def DESkeys(primKey) :
+    """
+Take a primary key and create 16 secondary keys for the DES algo, the key must be a table of bytes.
+This version is for a 64 bytes key (event if the security is like a 56 bytes key)
+    """
+    key=[] #the table contaning the 16 keys
+    #first permutation and splitting in 2 tabs of bytes
+    U=[]
+    D=[]
+    for i in range(28) :
+        U.append(primKey[PC1[i]-1])
+    for i in range(28,56) :
+        D.append(primKey[PC1[i]-1])
+    #creation of the 16 sub keys 
+    for i in range(16) :
+        #the left rotation 
+        if (i==1 or i==2 or i==9 or i==16) :
+            temp=U[0]
+            for j in range(27):
+                U[j]=U[j+1]
+            U[27]=temp
+            temp=D[0]
+            for j in range(27):
+                D[j]=D[j+1]
+            D[27]=temp
+        else :
+            temp1=U[0]
+            temp2=U[1]
+            for j in range(26):
+                U[j]=U[j+2]
+            U[26]=temp1
+            U[27]=temp2
+            temp1=D[0]
+            temp2=D[1]
+            for j in range(26):
+                D[j]=D[j+2]
+            D[26]=temp1
+            D[27]=temp2
+        #put back the two table together and apply PC2 to have a secondary key
+        temp=[x for x in U]
+        temp+=[x for x in D]
+        key.append([])
+        key[i]=[temp[PC2[x]-1] for x in range(48)]
+    #finaly we return the keys
+    return key
 
