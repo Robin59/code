@@ -117,6 +117,17 @@ FP=[16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,
 def DEScode(string,key) : 
     lengthString = len(string)
     res=''
+    #check if the key is from a correct longer and transform it in a table of byte 
+    lengthKey = len(key)
+    while (lengthKey%8 != 0) :
+        key+=(" ")
+        lengthKey+=1
+    keyB=[]
+    for char in key : 
+        for byte in ('{0:08b}'.format(ord(char))) : 
+            keyB.append(int(byte))
+    #contruction of the secondary keys
+    keys = DESkeys(keyB)
     # we need 64 bytes block,so if  we don't have a final block of 8 caracters, we complet it with  " " at the end of the String
     while (lengthString%8 != 0) :
         string+=(" ")
@@ -142,8 +153,7 @@ def DEScode(string,key) :
             for l in E :
                 temp.append(L[l-1])
             #tranformation with the key
-            mockKey=[0 for x in range(48)] #a mock key that don't do anything
-            temp2=[(int(temp[x])+mockKey[x])%2 for x in range (48)]
+            temp2=[(int(temp[x])+keys[j][x])%2 for x in range (48)]
             #back to a new tab with 32 elements by using the tabs S
             temp3=[]
             for l in range(8) :
