@@ -53,8 +53,7 @@ class TestEnigma(unittest.TestCase):
         self.assertEquals(enigmaDecode(code,key),string)
 
 
-class TestDESkey(unittest.TestCase):
-    
+class TestDESkey(unittest.TestCase):    
 
 
     def testBase(self):
@@ -79,6 +78,17 @@ class TestDESkey(unittest.TestCase):
         for x in range(16,48) :
             self.assertTrue(secKey[2][x]==0 )
 
+
+class testDES(unittest.TestCase) :
+
+    def testBase(self) :
+        message ="12345678"
+        key = '\x00\x00\x00\x00\x00\x00\x00\x00'
+        code = DEScode(message,key,False)
+        self.assertEquals(code,message)
+        key = "12345678"
+        self.assertNotEquals(code,message)
+        self.assertEquals(DEScode(code,key,True),message)
 
 if __name__ == '__main__' :
     unittest.main()
