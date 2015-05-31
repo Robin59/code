@@ -80,6 +80,19 @@ class TestDESkey(unittest.TestCase):
 
 
 class testDES(unittest.TestCase) :
+    
+    def testTable(self) :
+        #PI table's test
+        PItest=[240,256,272,288,232,248,264,280]
+        for i in range (8):
+            res = sum([ PI[i*8+j] for j in range (8)])
+            self.assertEquals(res,PItest[i])
+        #PI table's test
+        IPtest=[288,280,272,264,256,248,240,232]
+        for i in range (8):
+            res = sum([ IP[i*8+j] for j in range (8)])
+            self.assertEquals(res,IPtest[i])
+
 
     def testBase(self) :
         message ="12345678"
