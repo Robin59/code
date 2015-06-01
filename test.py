@@ -79,6 +79,7 @@ class TestDESkey(unittest.TestCase):
             self.assertTrue(secKey[2][x]==0 )
 
 
+
 class testDES(unittest.TestCase) :
     
     def testTable(self) :
@@ -121,12 +122,42 @@ class testDES(unittest.TestCase) :
         for i in range (16):
             res = sum([ S[3][j][i] for j in range(4) ])
             self.assertEquals(res,S4test[i])
+        S5test = [31,33,19,31,22,44,33,28,34,29,30,39,32,16,27,32]
+        for i in range (16):
+            res = sum([ S[4][j][i] for j in range(4) ])
+            self.assertEquals(res,S5test[i])
+        S6test = [35,33,31,34,27,27,42,26,24,28,21,35,21,31,27,38]
+        for i in range (16):
+            res = sum([ S[5][j][i] for j in range(4) ])
+            self.assertEquals(res,S6test[i])
+        S7test = [24,26,37,42,32,16,26,44,36,35,20,42,21,32,26,21]
+        for i in range (16):
+            res = sum([ S[6][j][i] for j in range(4) ])
+            self.assertEquals(res,S7test[i])
+        S8test = [23,29,39,20,29,40,40,20,37,32,28,38,23,22,32,28]
+        for i in range (16):
+            res = sum([ S[7][j][i] for j in range(4) ])
+            self.assertEquals(res,S8test[i])
+
+    def testPermutation(self) : 
+        table = [randint(0,1) for i in range(64)]
+        #just to be sure we don't have a table with just 0 or just 1
+        table[0]=0
+        table[1]=1
+        resPI = [table[PI[i]-1] for i in range(64)]
+        self.assertNotEquals(table,resPI)
+        self.assertEquals(table,[resPI[IP[i]-1] for i in range(64)])
+
 
     def testBase(self) :
-        message ="12345678"
+        message ="\x00\x00\x00\x00\x00\x00\x00\x00"
+        message = [0 for i in range (64)]
         key = '\x00\x00\x00\x00\x00\x00\x00\x00'
         #code = DEScode(message,key,False)
-        #self.assertEquals(code,message)
+        code = DESsimple(message,key,False,16)
+        decode = DESsimple(code,key,False,16)
+        
+        #self.assertEquals(decode,message)
         key = "12345678"
         #self.assertNotEquals(code,message)
         #self.assertEquals(DEScode(code,key,True),message)
