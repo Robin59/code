@@ -218,11 +218,10 @@ Simplified version for tests
             R.append(string[PI[j]-1])
         #now we're gonna do 1 permutation and transformations
         for j in range(nb) :
-            Rnext=[]#this is Rn+1 the result of the permutation and transformation
-            #expension fonction E on the left part L
+            #expension fonction E on the right part R
             temp=[]
             for l in E :
-                temp.append(L[l-1])
+                temp.append(R[l-1])
             #tranformation with the key number 'j'
             temp2=[(int(temp[x])+keys[j][x])%2 for x in range (48)]
             #back to a new tab with 32 elements by using the tabs S
@@ -235,18 +234,20 @@ Simplified version for tests
                 #tranform this value in bytes and put them in the new table with 32 cases
                 for byte in '{0:04b}'.format(value):
                     temp3.append(byte)
-                """z=0
+                """
+                z=0
                 for byte in '{0:04b}'.format(value):
                     temp3[z*4+l] = (byte)
                     z+=1
                 """
             #final permutation
+            f=[]#this is the fonction fj result of the permutation and transformation on the right part of the table
             for l in FP :
-                Rnext.append(int(temp3[l-1]))
+                f.append(int(temp3[l-1]))
             #now with have the fonction fi from the feistel algo
             Ltemp=L[:]
             L=R[:] # Ln+1 = Rn
-            R=[ (Rnext[x]+Ltemp[x])%2 for x in range(32)]
+            R=[ (f[x]+Ltemp[x])%2 for x in range(32)]
         #now that 8 characters have been cypher we apply the inverse of the initial permutation
         #print 'R : ', R, '  end'
         L.extend(R)
@@ -310,3 +311,35 @@ This version is for a 64 bytes key (event if the security is like a 56 bytes key
     #finaly we return the keys
     return key
 
+
+def feistelCypher(left,right, roundNb, keys):
+    """
+For now the fonction used is the one in DES, but it's planned to be usable with any given fonction.
+the nomber of round use in this algorithm
+    """
+    length = len(left)
+    for i in range (roundNb):
+        #first we get the result of f(right,Key)
+        #here for DES : 
+        ##expension
+        afterE=[right[x-1] for x in E]
+        ##add of the key
+        afterKey=[ (afterE[x]+keys[i][x])%2  for x in range(48) ]
+        ##now we use the S boxes
+        afterS=[]
+        for j in range (8) : 
+            #HERE THERE IS 2 different way to find the value give by Sj
+            x=afterKey[j*6]*2+afterKey[j*6+5]
+            y=afterKey[j*6+1]*8+afterKey[j*6+2]*4+afterKey[j*6+3]*2+afterKey[j*6+4]
+            value = S[j][x][y]
+            for byte in '{0:04b}'.format(value):
+                afterS.append(int(byte))
+        ## now we apply a final permutation to have the result of the fj fonction
+        f = [ afterS[x-1] for x in FP ]
+        #add of the fonction and the left part to have the new rigth part
+        rightNext = [ (left[x]+f[x])%2 for x in range (length) ]
+        #
+        left=right[:]
+        right=rightNext[:]
+    # at the end we return the left and the right parts
+    return (left, right)

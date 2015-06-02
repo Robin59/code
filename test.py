@@ -78,9 +78,28 @@ class TestDESkey(unittest.TestCase):
         for x in range(16,48) :
             self.assertTrue(secKey[2][x]==0 )
 
+class TestFeistel(unittest.TestCase) :
+    
+    def testBase(self) : 
+        key = [[0 for i in range (48)]]
+        left = [0 for i in range (32)]
+        right = [0 for i in range (32)]
+        (left,right) = feistelCypher(left,right,1,key)
+        #print right
+        (left,right) = feistelCypher(right,left,1,key)
+        #print 'after', left, right
+
+    def testInversible(self) :
+        key = [[0 for i in range (48)] for j in range(16)]
+        left = [0 for i in range (32)]
+        right = [0 for i in range (32)]
+        (leftRes,rightRes) = feistelCypher(left,right,16,key)
+        self.assertNotEquals((left,right),(leftRes,rightRes))
+        self.assertEquals((left,right),feistelCypher(rightRes,leftRes,16,key))
 
 
-class testDES(unittest.TestCase) :
+
+class TestDES(unittest.TestCase) :
     
     def testTable(self) :
         #PI table's test
@@ -154,9 +173,10 @@ class testDES(unittest.TestCase) :
         message = [0 for i in range (64)]
         key = '\x00\x00\x00\x00\x00\x00\x00\x00'
         #code = DEScode(message,key,False)
-        code = DESsimple(message,key,False,16)
-        decode = DESsimple(code,key,False,16)
-        
+        code = DESsimple(message,key,False,1)
+        decode = DESsimple(code,key,True,16)
+        # print code, 'length : ', len(code)
+        #print code
         #self.assertEquals(decode,message)
         key = "12345678"
         #self.assertNotEquals(code,message)
