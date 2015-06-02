@@ -173,19 +173,15 @@ class TestDES(unittest.TestCase) :
         self.assertEquals(table,[resPI[IP[i]-1] for i in range(64)])
 
 
-    def testBase(self) :
-        message ="\x00\x00\x00\x00\x00\x00\x00\x00"
-        message = [0 for i in range (64)]
-        key = '\x00\x00\x00\x00\x00\x00\x00\x00'
-        #code = DEScode(message,key,False)
-        code = DESsimple(message,key,False,1)
+    def testRandomOnSimplified(self) :
+        message = [randint(0,1) for i in range (64)]
+        key = [randint(0,1) for i in range (64)]
+        code = DESsimple(message,key,False,16)
         decode = DESsimple(code,key,True,16)
-        # print code, 'length : ', len(code)
-        #print code
-        #self.assertEquals(decode,message)
-        key = "12345678"
-        #self.assertNotEquals(code,message)
-        #self.assertEquals(DEScode(code,key,True),message)
+        self.assertNotEquals(code,message)
+        self.assertEquals(decode,message)
+        
+
 
 if __name__ == '__main__' :
     unittest.main()

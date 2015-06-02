@@ -196,18 +196,13 @@ Simplified version for tests
     res=''
     lengthString=len(string)
     #check if the key is from a correct longer and  add " " to this end if not
-    if (len(key)!=8) :
+    if (len(key)!=64) :
         print 'The key\'s longer is not good'
-    #transform the key in a table of byte 
-    keyB=[]
-    for char in key : 
-        for byte in ('{0:08b}'.format(ord(char))) : 
-            keyB.append(int(byte))
     #contruction of the secondary keys
-    keys = DESkeys(keyB)
+    keys = DESkeys(key)
     if(decrypt):
-        temp = keys[::-1]
-        keys = temp
+            temp = keys[::-1]
+            keys = temp           
     for i in range(lengthString/8) :
         #first permutation and splitting in 2 tabs of bytes
         L=[]
@@ -216,41 +211,13 @@ Simplified version for tests
             L.append(string[PI[j]-1])
         for j in range(32,64) :
             R.append(string[PI[j]-1])
-        #now we're gonna do 1 permutation and transformations
-        for j in range(nb) :
-            #expension fonction E on the right part R
-            temp=[]
-            for l in E :
-                temp.append(R[l-1])
-            #tranformation with the key number 'j'
-            temp2=[(int(temp[x])+keys[j][x])%2 for x in range (48)]
-            #back to a new tab with 32 elements by using the tabs S
-            temp3=[]
-            for l in range(8) :
-                #searching the coresponding value in the Sx table
-                x=temp2[l*6]*2+temp2[l*6+5]
-                y=temp2[l*6+1]*8+temp2[l*6+2]*4+temp2[l*6+3]*2+temp2[l*6+4]
-                value = S[l][x][y]
-                #tranform this value in bytes and put them in the new table with 32 cases
-                for byte in '{0:04b}'.format(value):
-                    temp3.append(byte)
-                """
-                z=0
-                for byte in '{0:04b}'.format(value):
-                    temp3[z*4+l] = (byte)
-                    z+=1
-                """
-            #final permutation
-            f=[]#this is the fonction fj result of the permutation and transformation on the right part of the table
-            for l in FP :
-                f.append(int(temp3[l-1]))
-            #now with have the fonction fi from the feistel algo
-            Ltemp=L[:]
-            L=R[:] # Ln+1 = Rn
-            R=[ (f[x]+Ltemp[x])%2 for x in range(32)]
+        #now application of the feistel's scheme
+        Rres=[]
+        Lres=[]
+        (Lres,Rres)=feistelCypher(L,R,16,keys)
         #now that 8 characters have been cypher we apply the inverse of the initial permutation
-        #print 'R : ', R, '  end'
-        L.extend(R)
+        L=Rres[:]
+        L.extend(Lres)
         finalTab=[]
         for j in range(64) :
             finalTab.append(int(L[IP[j]-1]))
