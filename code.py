@@ -114,9 +114,11 @@ S=[[[14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7],[0,15,7,4,14,2,13,1,10,6,12,11,9,5,3
 #table for the last permutation 
 FP=[16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25]
 
-def DEScode(string,key,decrypt) : 
+def DES(string,key,decrypt) : 
     """
-the third parameter is a boolean that tell if the algorithme crypt or decrypt the text
+Original DES (Data Encryption Standard), with the same weakness : a too short key
+The string and the key are characters' strings, ideally the key must be 8 characters (more won't be use and with less the key is completed with empty space)
+The third parameter is a boolean that tell if the algorithme crypt or decrypt the text, True is for decrypting.
     """
     lengthString = len(string)
     res=''
@@ -140,7 +142,7 @@ the third parameter is a boolean that tell if the algorithme crypt or decrypt th
     while (lengthString%8 != 0) :
         string+=(" ")
         lengthString+=1
-    
+    #
     for i in range(lengthString/8) :
         #char are converted in binairy
         init=''
@@ -149,49 +151,29 @@ the third parameter is a boolean that tell if the algorithme crypt or decrypt th
         #first permutation and splitting in 2 tabs of bytes
         L=[]
         R=[]
-        for j in range(64) :
-            L.append(init[PI[j]-1])
-            R.append(init[PI[j]-1])
-        #now we're gonna do 16 permutations and transformations with 16 different keys on this blocks
-        for j in range(16) :
-            Rnext=[]#this is Rn+1 the result of the permutation and transformation
-            #expension fonction E on the left part L
-            temp=[]
-            for l in E :
-                temp.append(L[l-1])
-            #tranformation with the key number 'j'
-            temp2=[(int(temp[x])+keys[j][x])%2 for x in range (48)]
-            #back to a new tab with 32 elements by using the tabs S
-            temp3=[0 for z in range(32)]
-            for l in range(8) :
-                #searching the coresponding value in the Sx table
-                x=temp2[l*6]*2+temp2[l*6+5]
-                y=temp2[l*6+1]*8+temp2[l*6+2]*4+temp2[l*6+3]*2+temp2[l*6+4]
-                value = S[l][x][y]
-                #tranform this value in bytes and put them in the new table with 32 cases
-                z=0
-                for byte in '{0:04b}'.format(value):
-                    temp3[z*4+l] = (byte)
-                    z+=1
-            #final permutation
-            for l in FP :
-                Rnext.append(temp3[l-1])
-            L=R[:] # Ln+1 = Rn
-            R=Rnext
+        for j in range(32) :
+            L.append(int(init[PI[j]-1]))
+        for j in range(32,64) :
+            R.append(int(init[PI[j]-1]))
+        #now application of the feistel's scheme with 16 round
+        Rres=[]
+        Lres=[]
+        (Lres,Rres)=feistelCypher(L,R,16,keys)
         #now that 8 characters have been cypher we apply the inverse of the initial permutation
-        L.extend(R)
-        finalTab=[]# VERIFY IF IT'S LEFT AND RIGHT OR UPPER AND DOWN
+        L=Rres[:]
+        L.extend(Lres)
+        finalTab=[]
         for j in range(64) :
             finalTab.append(int(L[IP[j]-1]))
         #we convert the byte in char
         for j in range(8) :
-            res+=chr((finalTab[j*8]+finalTab[j*8+1]*2+finalTab[j*8+2]*4+finalTab[j*8+3]*8+finalTab[j*8+4]*16+finalTab[j*8+5]*32+finalTab[j*8+6]*64+finalTab[j*8+7]*128)%256)
+            res+=chr((finalTab[j*8]*128+finalTab[j*8+1]*64+finalTab[j*8+2]*32+finalTab[j*8+3]*16+finalTab[j*8+4]*8+finalTab[j*8+5]*4+finalTab[j*8+6]*2+finalTab[j*8+7])%256)
     return res
 
 
 def DESsimple(string,key,decrypt, nb) : 
     """
-Simplified version for tests
+Simplified version using lists of bytes for the message and the key and returning a bytes' list, you can choose the number of round the feistal scheme will be apply
     """
     res=''
     lengthString=len(string)
@@ -203,7 +185,7 @@ Simplified version for tests
     if(decrypt):
             temp = keys[::-1]
             keys = temp           
-    for i in range(lengthString/8) :
+    for i in range(lengthString/64) :
         #first permutation and splitting in 2 tabs of bytes
         L=[]
         R=[]

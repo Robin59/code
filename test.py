@@ -182,6 +182,13 @@ class TestDES(unittest.TestCase) :
         self.assertEquals(decode,message)
         
 
+    def testDEScomplet(self) :
+        message = "12345678"
+        key = "abCDefGH"
+        code = DES(message,key,False)
+        decode = DES(code,key,True)
+        self.assertNotEquals(code,message)
+        self.assertEquals(decode,message)
 
 if __name__ == '__main__' :
     unittest.main()
