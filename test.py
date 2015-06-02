@@ -85,9 +85,7 @@ class TestFeistel(unittest.TestCase) :
         left = [0 for i in range (32)]
         right = [0 for i in range (32)]
         (left,right) = feistelCypher(left,right,1,key)
-        #print right
-        (left,right) = feistelCypher(right,left,1,key)
-        #print 'after', left, right
+        #a test value
 
     def testInversible(self) :
         key = [[0 for i in range (48)] for j in range(16)]
@@ -97,7 +95,14 @@ class TestFeistel(unittest.TestCase) :
         self.assertNotEquals((left,right),(leftRes,rightRes))
         self.assertEquals((left,right),feistelCypher(rightRes,leftRes,16,key))
 
-
+    def testInversibleWithRandom(self) :
+        key = [[randint(0,1) for i in range (48)] for j in range(16)]
+        inverseKey=key[::-1]
+        left = [randint(0,1) for i in range (32)]
+        right = [randint(0,1) for i in range (32)]
+        (leftRes,rightRes) = feistelCypher(left,right,16,key)
+        self.assertNotEquals((left,right),(leftRes,rightRes))
+        self.assertEquals((right,left),feistelCypher(rightRes,leftRes,16,inverseKey))
 
 class TestDES(unittest.TestCase) :
     
