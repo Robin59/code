@@ -308,7 +308,47 @@ the nomber of round use in this algorithm
     # at the end we return the left and the right parts
     return (left, right)
 
+#TDES triple DES
 
+def TDES(message, keys, decrypt) :
+    """
+TDES (Triple DES) is a safer cypher algorithm than the DES, because the key longer is long enough (still 128 bytes event with a middle attack technics). But not as good as AES in term of execution time.
+Keys must be a tuple of 3 keys, each one containing 8 characters
+    """
+    res=''
+    #transform the keys in a tables of byte 
+    keysB=[[],[],[]]
+    for i in range(3) :
+        for char in keys[i] : 
+            for byte in ('{0:08b}'.format(ord(char))) : 
+                keysB[i].append(int(byte))
+    if(decrypt):
+        temp = keysB[0][:]
+        keysB[0] = keysB[2][:]
+        keysB[2] = temp
+   
+    #add characters in the end in case it's not a multiple of 8
+    charToAdd = (len(message))%8
+    while (charToAdd > 0) :
+        message+=(' ')
+        charToAdd-=1
+    #tranform the characters in bytes 
+    messB=[]
+    for char in message : 
+        for byte in ('{0:08b}'.format(ord(char))) : 
+            messB.append(int(byte))
+    #DESsimple is just working with block of 64 bytes so we cut the message
+    for i in range(len(messB)/64):
+        #apply 3 times the DES
+        inter1 = DESsimple(messB[i*64:i*64+64],keysB[0],decrypt,16)
+        inter2 = DESsimple(inter1,keysB[1], not decrypt,16)
+        resB = DESsimple(inter2,keysB[2],decrypt,16)
+        #tranform the result in bytes to a result in characters
+        for j in range(8):
+            res+=chr((resB[j*8]*128+resB[j*8+1]*64+resB[j*8+2]*32+resB[j*8+3]*16+resB[j*8+4]*8+resB[j*8+5]*4+resB[j*8+6]*2+resB[j*8+7])%256)
+    return res
+
+# lunch when use as a script
 def main():
     parser = ArgumentParser()
     parser.add_argument ("-d", "--decrypt", dest='decrypt', default=False, action='store_true', help="decrypt message")

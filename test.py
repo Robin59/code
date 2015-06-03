@@ -190,5 +190,14 @@ class TestDES(unittest.TestCase) :
         self.assertNotEquals(code,message)
         self.assertEquals(decode,message)
 
+
+class TestDES(unittest.TestCase) :
+    def testTDES(self):
+        message = "12345678433&"
+        keys = ("abCDefGH","12344321","87654321")
+        code = TDES(message,keys,False)
+        decode = TDES(code,keys,True)
+        print decode
+
 if __name__ == '__main__' :
     unittest.main()
