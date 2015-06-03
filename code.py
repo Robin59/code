@@ -1,8 +1,23 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import tools
+from argparse import ArgumentParser
+
+
 
 #Cesar's method
+def cesar(string,key,decrypt):
+    """
+this is the fonction call by the main fonction for cesar cypher
+    """
+    if(type(key) is str) :
+        key= ord(key[0])
+    if (decrypt) :
+        return cesarDecode(string,key)
+    else :
+        return cesarCode(string,key)
+
 def cesarCode(string,key):
     res = ''
     for char in string :
@@ -292,3 +307,22 @@ the nomber of round use in this algorithm
         right=rightNext[:]
     # at the end we return the left and the right parts
     return (left, right)
+
+
+def main():
+    parser = ArgumentParser()
+    parser.add_argument ("-d", "--decrypt", dest='decrypt', default=False, action='store_true', help="decrypt message")
+    parser.add_argument ("-k", "--key", dest='key', default='0', action='store', help='the key use by the cypher algorithm')
+    parser.add_argument ("-a", "--algo", dest='algo', default='DES', action='store', help='algorithm use for crypt or decrypt')
+    args = parser.parse_args()
+    message = raw_input()
+    #switch 
+    if(args.algo=='DES'):
+        result = DES(message, args.key, args.decrypt)
+    else :
+        result = cesar(message, args.key, args.decrypt)
+    print result
+
+
+if __name__ == '__main__':
+    exit(main())
