@@ -210,13 +210,22 @@ class TestRSA(unittest.TestCase) :
         public =43
         message = 42
         crypted = RSAsimple (message, 143, public)
-        print RSAsimple (crypted, 143, public)
+        decrypted = RSAsimple (crypted, 143, private)
         self.assertNotEquals(crypted,message)
         self.assertEquals(decrypted,message)
         #verify that we can't decrypt the crypted message with the public key
         self.assertNotEquals(RSAsimple (crypted, 143, public),message)
 
 
+    def testRSA(self) :
+        #test with the values p=13 q=11, so n=143
+        private = 7
+        public =43
+        message = 24
+        cryptedS = RSAsimple (message, 143, public)
+        cryptedRSA = RSA (message, 143, public)
+        self.assertEquals(message,RSA(cryptedRSA, 143, private))
+        self.assertEquals(cryptedS,cryptedRSA)
 
 if __name__ == '__main__' :
     unittest.main()
