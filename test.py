@@ -193,11 +193,30 @@ class TestDES(unittest.TestCase) :
 
 class TestDES(unittest.TestCase) :
     def testTDES(self):
-        message = "12345678433&"
+        message = "12345678433&1187"
         keys = ("abCDefGH","12344321","87654321")
         code = TDES(message,keys,False)
         decode = TDES(code,keys,True)
-        print decode
+        self.assertNotEquals(code,message)
+        self.assertEquals(decode,message)
+        
+
+
+class TestRSA(unittest.TestCase) :
+    
+    def testRSAbasic(self) :
+        #test with the values p=13 q=11, so n=143
+        private = 7
+        public =43
+        message = 42
+        crypted = RSAsimple (message, 143, public)
+        print RSAsimple (crypted, 143, public)
+        self.assertNotEquals(crypted,message)
+        self.assertEquals(decrypted,message)
+        #verify that we can't decrypt the crypted message with the public key
+        self.assertNotEquals(RSAsimple (crypted, 143, public),message)
+
+
 
 if __name__ == '__main__' :
     unittest.main()

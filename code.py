@@ -348,6 +348,17 @@ Keys must be a tuple of 3 keys, each one containing 8 characters
             res+=chr((resB[j*8]*128+resB[j*8+1]*64+resB[j*8+2]*32+resB[j*8+3]*16+resB[j*8+4]*8+resB[j*8+5]*4+resB[j*8+6]*2+resB[j*8+7])%256)
     return res
 
+
+#RSA 
+
+def RSAsimple (message, n, key) :
+    """
+A basic version of the RSA cypher that isn't optimal in term of algorithm complexity.
+The message must be an integer.
+    """
+    return ((message)**key)%n
+
+
 # lunch when use as a script
 def main():
     parser = ArgumentParser()
