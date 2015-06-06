@@ -354,7 +354,7 @@ Keys must be a tuple of 3 keys, each one containing 8 characters
 def RSAsimple (message, n, key) :
     """
 A basic version of the RSA cypher that isn't optimal in term of algorithm complexity.
-For a fixed message longer, this algorithm complexity is exponential with n value.
+This algorithm complexity is exponential with n value.
 The message must be an integer.
     """
     return ((message)**key)%n
@@ -362,21 +362,22 @@ The message must be an integer.
 
 def RSA (message, n, key) :
     """
-A version working with bytes.  The key length in bytes can't be longer than r (here 512 bytes).
-Not sure if it so much better in term of complexity in python, but theoretically the complexity is polynomial with r (the length of the block).
+A version working with bytes.
+Not sure if it so much better in term of complexity in python, but theoretically the complexity is polynomial with the key's length (in bytes).
     """
-    r = 512 #lenght of the blocks
     #transfor the key in a byte string
-    keyTab=[int(byte) for byte in ('{0:0512b}'.format(key))][::-1]
+    keyTab=[int(byte) for byte in ('{0:0b}'.format(key))][::-1]
+    length = len(keyTab)
     y=[message,]
-    for i in range(1,r) :
+    for i in range(1, length) :
         y.append((y[i-1]**2)%n)
     #caculation of the result
     result = 1
-    for i in range(r):
+    for i in range(length):
         if keyTab[i] :
             result*=y[i]
     return result%n     
+
 
 
 # lunch when use as a script

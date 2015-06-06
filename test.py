@@ -221,7 +221,7 @@ class TestRSA(unittest.TestCase) :
         #test with the values p=13 q=11, so n=143
         private = 7
         public =43
-        message = 24
+        message = randint(0,143)
         cryptedS = RSAsimple (message, 143, public)
         cryptedRSA = RSA (message, 143, public)
         self.assertEquals(message,RSA(cryptedRSA, 143, private))
