@@ -223,9 +223,26 @@ class TestRSA(unittest.TestCase) :
         public =43
         message = randint(0,143)
         cryptedS = RSAsimple (message, 143, public)
-        cryptedRSA = RSA (message, 143, public)
-        self.assertEquals(message,RSA(cryptedRSA, 143, private))
+        cryptedRSA = RSAint (message, 143, public)
+        self.assertEquals(message,RSAint(cryptedRSA, 143, private))
         self.assertEquals(cryptedS,cryptedRSA)
+        #test with the values p=101 q=113, so n=11413
+        private = 733
+        public =997
+        message = randint(0,11413)
+        cryptedS = RSAsimple (message, 11413, public)
+        cryptedRSA = RSAint (message, 11413, public)
+        self.assertEquals(message,RSAint(cryptedRSA, 11413, private))
+        self.assertEquals(cryptedS,cryptedRSA)
+
+    def testRSAstring(self) :
+        private = 733
+        public =997
+        message = "Hello world!"
+        crypted = RSAstring (message, 11413, public,False)
+        decrypted = RSAstring (crypted, 11413, private,True)
+        self.assertEquals(message,decrypted)
+        self.assertNotEquals(message,crypted)
 
 if __name__ == '__main__' :
     unittest.main()
