@@ -360,7 +360,7 @@ The message must be an integer.
     return ((message)**key)%n
 
 
-def RSA (message, n, key) :
+def RSAint (message, n, key) :
     """
 A version working with bytes.
 Not sure if it so much better in term of complexity in python, but theoretically the complexity is polynomial with the key's length (in bytes).
@@ -378,7 +378,55 @@ Not sure if it so much better in term of complexity in python, but theoretically
             result*=y[i]
     return result%n     
 
+def RSAstring (message, n, key, decrypt):
+    """
+The value of n must be bigger than 255. And it can't be pair (which won't be probably).
+    """
+    res = ''
+    #first we find the length of the blocks we're gonna use
+    #length is the number of characters in one block for the message, the number of characters in a crypted block is one character longer than in clear
+    length = 1
+    while (256**length<n) :
+        length+=1
+    length-=1
+    lengthA = length +1
+    if (decrypt) :
+        length+=1
+        lengthA-=1
+    while (len(message)%length != 0): #check if there is enough characters is the last block
+        message+=' '
+    for i in range (len(message)/length):
+        #put the block chars into a tab of bytes
+        bytes = []
+        for j in range (length) :
+            bytes.extend([int(byte) for byte in ('{0:08b}'.format(ord(message[j+i*length])))][::-1])
+        # transforme the tab of bytes into an interger
+        value = bytes[0]
+        for j in range (1,len(bytes)) :
+            value += (bytes[j]*2)**j
+        #now application of the RSA cypher
+        resultInt = RSAint(value, n, key)
+        # translate the value in bytes
+        resB = [int(byte) for byte in '{0:0b}'.format(resultInt)][::-1]
+        while (len(resB)<lengthA*8) :
+            resB.append(0)
+        #transfomation in char
+        for j in range (lengthA) :
+            val=((resB[j*8]+resB[j*8+1]*2+resB[j*8+2]*4+resB[j*8+3]*8+resB[j*8+4]*16+resB[j*8+5]*32+resB[j*8+6]*64+resB[j*8+7]*128))
+            res+=chr(val)
+    return res
 
+def RSA (message, n, key, decrypt) :
+    """
+    """
+    #Sadly there is no surchage in python, that's the raison this fonction exist
+    if (type(message) == str) :
+        return RSAstring(message, n, key, decrypt)
+    elif (type(message) == int) :
+        return RSAint(message, n, key)     
+    else :
+        return 0
+        #raise an exception
 
 # lunch when use as a script
 def main():
