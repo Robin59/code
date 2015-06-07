@@ -434,11 +434,14 @@ def main():
     parser.add_argument ("-d", "--decrypt", dest='decrypt', default=False, action='store_true', help="decrypt message")
     parser.add_argument ("-k", "--key", dest='key', default='0', action='store', help='the key use by the cypher algorithm')
     parser.add_argument ("-a", "--algo", dest='algo', default='DES', action='store', help='algorithm use for crypt or decrypt')
+    parser.add_argument ("-n", "--modulus", dest='n', action='store', help='cipher modulus for RSA')
     args = parser.parse_args()
     message = raw_input()
     #switch 
     if(args.algo=='DES'):
         result = DES(message, args.key, args.decrypt)
+    elif(args.algo=='RSA'):
+        result = RSA(message, int(args.n), int(args.key), args.decrypt)
     else :
         result = cesar(message, args.key, args.decrypt)
     print result
