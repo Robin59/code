@@ -29,3 +29,24 @@ def vigKey (length) :
         key.append(randint(0,255))
     return key
 
+
+# create a table with prime nombers
+
+def prime(length) :
+    """
+Length is the lenght of the table which means that how many prime numbers it will contain. The primes are always clacified by ascending order
+    """
+    tab = [2,3]
+    current = 5
+    while (len(tab)<length) :
+        i=0
+        while (current%tab[i] !=0 and current>=tab[i]**2) :
+            i+=1
+        #we check if the reason why we leave the while condition is because the current number is prime
+        if ( current%tab[i] != 0 ) :
+            #if it's a prime number we add it to the table
+            tab.append(current)
+        #now we can check for the next odd nomber
+        current+=2
+    #
+    return tab
