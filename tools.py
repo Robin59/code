@@ -50,3 +50,17 @@ Length is the lenght of the table which means that how many prime numbers it wil
         current+=2
     #
     return tab
+
+
+# Test if a number is prime
+
+def pseudoPrimeTest(n) :
+    result = True
+    i = 1
+    while(result and i<5 ) :
+        b = randint (i*2,i*2+5)
+        if( (b**(n-1))%n != 1 ) :
+            result = False
+        i+=1
+    return result
+        
