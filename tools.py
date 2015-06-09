@@ -54,12 +54,15 @@ Length is the lenght of the table which means that how many prime numbers it wil
 
 # Test if a number is prime
 
-def pseudoPrimeTest(n) :
+def pseudoPrime(n) :
+    """
+Test if a number n  is pseude prime, which mean it's probaly prime, but don't always work specialy never work with Carmichael's numbers that arn't prime but are pseudo prime
+    """
     result = True
     i = 1
     while(result and i<5 ) :
-        b = randint (i*2,i*2+5)
-        if( (b**(n-1))%n != 1 ) :
+        b = randint(2,n)
+        if( (b**(n-1))%n != 1 and b!=n ) :
             result = False
         i+=1
     return result

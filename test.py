@@ -250,5 +250,19 @@ class TestPrimeNumber (unittest.TestCase) :
         testTable = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
         self.assertEquals( tools.prime(25), testTable)
 
+    def testPseudoPrime(self):
+        #test with the 25 first primes
+        testTable = tools.prime(25)[1:]
+        for prime in testTable :
+            self.assertTrue( tools.pseudoPrime(prime))
+        #test with non prime
+        self.assertFalse( tools.pseudoPrime(15))
+        self.assertFalse( tools.pseudoPrime(22))
+        self.assertFalse( tools.pseudoPrime(69))
+        
+        #test with Carmichael's number (which aren't prime but still are pseudoprime)
+        self.assertFalse( tools.pseudoPrime(561))
+        self.assertFalse( tools.pseudoPrime(1105))
+
 if __name__ == '__main__' :
     unittest.main()
