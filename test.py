@@ -244,5 +244,11 @@ class TestRSA(unittest.TestCase) :
         self.assertEquals(message,decrypted)
         self.assertNotEquals(message,crypted)
 
+
+class TestPrimeNumber (unittest.TestCase) :
+    def testPrimeTable(self):
+        testTable = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+        self.assertEquals( tools.prime(25), testTable)
+
 if __name__ == '__main__' :
     unittest.main()
