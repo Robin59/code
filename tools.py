@@ -67,3 +67,14 @@ Test if a number n  is pseude prime, which mean it's probaly prime, but don't al
         i+=1
     return result
         
+
+def findPrime (n) :
+    """
+Try to find a random prime number between the numbers n and n+1000.
+    """
+    n = n + randint(1,1000)
+    if (n%2 == 0) : 
+        n+=1
+    while ( not pseudoPrime(n) ) :
+        n+=2
+    return n
