@@ -430,10 +430,10 @@ def RSA (message, n, key, decrypt) :
 
 # lunch when use as a script
 def main():
-    parser = ArgumentParser()
-    parser.add_argument ("-d", "--decrypt", dest='decrypt', default=False, action='store_true', help="decrypt message")
+    parser = ArgumentParser( description="""This is a cypher tool from ASCII characters to ASCII characters, exemple of use : ./code -a DES -k exempKey <clear.txt > crypted.txt""")
+    parser.add_argument ("-d", "--decrypt", dest='decrypt', default=False, action='store_true', help="decrypt message instead of encrytping it")
     parser.add_argument ("-k", "--key", dest='key', default='0', action='store', help='the key use by the cypher algorithm')
-    parser.add_argument ("-a", "--algo", dest='algo', default='DES', action='store', help='algorithm use for crypt or decrypt')
+    parser.add_argument ("-a", "--algo", dest='algo', default='DES', action='store', help='algorithm use for crypt or decrypt, available algorithms are DES and RSA')
     parser.add_argument ("-n", "--modulus", dest='n', action='store', help='cipher modulus for RSA')
     args = parser.parse_args()
     message = raw_input()
