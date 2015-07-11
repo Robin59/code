@@ -78,3 +78,23 @@ Try to find a random prime number between the numbers n and n+1000.
     while ( not pseudoPrime(n) ) :
         n+=2
     return n
+
+# Euclide algorithm (to calculat biggest multiple between two numbers)
+
+def euclide(a, b) :
+    """
+find the biggest multiple between two numbers (a and b)
+    """
+    #check that a>b 
+    if (b>a) : 
+        temp = a 
+        a = b 
+        b = temp
+    while (True) :
+        temp = b 
+        b = a%b
+        a = temp
+        if (b == 0) :
+            break
+    return a
+        

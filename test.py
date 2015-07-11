@@ -271,5 +271,15 @@ class TestPrimeNumber (unittest.TestCase) :
         self.assertTrue( prime in testTable or prime == 561 )
 
 
+class TestEuclideAlgo (unittest.TestCase) :
+    def test(self):
+        a = 10
+        b = 5
+        self.assertEquals( tools.euclide(a,b), 5)
+        self.assertEquals( tools.euclide(b,a), 5)
+        a = 12
+        b = 8
+        self.assertEquals( tools.euclide(a,b), 4)
+
 if __name__ == '__main__' :
     unittest.main()
