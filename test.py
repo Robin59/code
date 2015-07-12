@@ -281,5 +281,19 @@ class TestEuclideAlgo (unittest.TestCase) :
         b = 8
         self.assertEquals( tools.euclide(a,b), 4)
 
+    def testEuclide2(self):
+        a = 12
+        b = 8
+        (rest,u,v)= tools.euclide2(a,b)
+        self.assertEquals ( (rest,u,v), (4,1,-1))
+        
+    def testEuclideRand(self):
+        a= randint (10,1000)
+        b= randint (10,1000)
+        (rest,u,v)= tools.euclide2(a,b)
+        self.assertEquals ( rest, tools.euclide(a,b))
+        self.assertEquals ( rest, a*u+b*v)
+
+
 if __name__ == '__main__' :
     unittest.main()

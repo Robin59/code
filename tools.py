@@ -87,14 +87,25 @@ find the biggest multiple between two numbers (a and b)
     """
     #check that a>b 
     if (b>a) : 
-        temp = a 
-        a = b 
-        b = temp
+        a, b = b , a
     while (True) :
-        temp = b 
-        b = a%b
-        a = temp
+        a, b = b, a%b
         if (b == 0) :
             break
     return a
+        
+def euclide2(a,b) :
+    """
+find the greatest multiple between two numbers (a and b) and give u and v with r=a*u+b*v)
+    """
+    r, u, v, r2, u2, v2 = a,1,0,b,0,1
+    #check that a>b 
+    if (b>a) :  
+        r, r2 = r2, r
+    while ( r2 != 0) :
+        q = r/r2
+        r, u, v, r2, u2, v2 = r2,u2,v2,r-q*r2,u-q*u2,v-q*v2
+    if (b>a) :
+        return (r,v,u)
+    return (r,u,v)
         
