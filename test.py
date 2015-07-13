@@ -294,6 +294,22 @@ class TestEuclideAlgo (unittest.TestCase) :
         self.assertEquals ( rest, tools.euclide(a,b))
         self.assertEquals ( rest, a*u+b*v)
 
+class TestRSAKeyCreation (unittest.TestCase) : 
+    def testPartialKeyCreation (self):
+        p = 101
+        q = 113
+        (e,d) = tools.partielRSAkey (p,q)
+        phi = (p-1)*(q-1)
+        self.assertEquals(1, tools.euclide(phi,e))
+        self.assertEquals(1 , (e*d)%phi)
+        #test on RSA
+        n = p*q
+        message = "Hello world!"
+        crypted = RSAstring (message, n, e,False)
+        decrypted = RSAstring (crypted, n, d,True)
+        self.assertEquals(message,decrypted)
+        self.assertNotEquals(message,crypted)
+
 
 if __name__ == '__main__' :
     unittest.main()

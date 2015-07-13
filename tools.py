@@ -109,3 +109,18 @@ find the greatest multiple between two numbers (a and b) and give u and v with r
         return (r,v,u)
     return (r,u,v)
         
+# tools for creating keys for RSA cypher
+
+def partielRSAkey (p,q):
+    """
+create e (a public key) and d (private key) from 2 prime number p and q
+    """
+    phi = (p-1)*(q-1)
+    e = phi-2 # should had some randomness for the first e
+    (rest,_,d)= euclide2(phi,e)
+    # we test if phi and e are prime between them
+    while (rest!=1) :
+        e -= 1
+        (rest,_,d)= euclide2(phi,e)
+        #should raise an exception if no number found (occure with small numbers)
+    return (e,d)
