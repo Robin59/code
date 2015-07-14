@@ -75,9 +75,31 @@ Try to find a random prime number between the numbers n and n+1000.
     n = n + randint(1,1000)
     if (n%2 == 0) : 
         n+=1
-    while ( not pseudoPrime(n) ) :
+    # divTests complexity is less important than pseudoPrime
+    while (divTests(n) or not pseudoPrime(n) ) :
         n+=2
     return n
+
+def divTests(n) :
+    """
+Use divisibility tests to check if n is mutiple of 3, 5 or 11
+    """
+    #not sure about the computational complexity of this line and if there is a better way to do it 
+    tab = [ int(a) for a in str(n) ]
+    if (tab[len(tab)-1] == 5) :
+        return True
+    elif(sum(tab) % 3 == 0) :
+        return True
+    else :
+        sumAlt=0
+        flag = False
+        for x in tab :
+            if (flag) :
+                sumAlt +=x
+            else :
+                sumAlt -=x
+            flag = not flag
+        return sumAlt%11 == 0
 
 # Euclide algorithm (to calculat biggest multiple between two numbers)
 
