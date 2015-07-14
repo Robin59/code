@@ -271,6 +271,18 @@ class TestPrimeNumber (unittest.TestCase) :
         self.assertTrue( prime in testTable or prime == 561 )
 
 
+class TestDivTests (unittest.TestCase) :
+    def testBase (self):
+        self.assertTrue( tools.divTests(21))
+        self.assertTrue( tools.divTests(25))
+        self.assertTrue( tools.divTests(121))
+        self.assertFalse(tools.divTests(91))
+
+    def testRandom (self):
+        randNumber = randint(100, 10000)
+        flag = randNumber%3==0 or randNumber%5==0 or randNumber%11==0
+        self.assertEquals (flag, tools.divTests(randNumber))
+
 class TestEuclideAlgo (unittest.TestCase) :
     def test(self):
         a = 10
