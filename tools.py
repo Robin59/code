@@ -146,3 +146,17 @@ create e (a public key) and d (private key) from 2 prime number p and q
         (rest,_,d)= euclide2(phi,e)
         #should raise an exception if no number found (occure with small numbers)
     return (e,d)
+
+def RSAkey (x) :
+    """
+Create the keys((n,e),(n,d)) for the RSA cypher. The prime numbers are gonna be bigger than x.
+    """
+    #create 2 different prime numbers
+    while (True) :
+        p = findPrime(x)
+        q = findPrime(x+1000)
+        n = p*q
+        (e,d) = partielRSAkey (p,q)
+        if (p!=q and d>0) :
+            return ((n,e),(n,d))
+    

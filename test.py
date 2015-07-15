@@ -321,7 +321,14 @@ class TestRSAKeyCreation (unittest.TestCase) :
         decrypted = RSAstring (crypted, n, d,True)
         self.assertEquals(message,decrypted)
         self.assertNotEquals(message,crypted)
-
+        
+    def testRSAkey (self):
+        ((n,e),(_,d))= tools.RSAkey(100)
+        message = "Hello world!"
+        crypted = RSAstring (message, n, e,False)
+        decrypted = RSAstring (crypted, n, d,True)
+        self.assertEquals(message,decrypted)
+        # self.assertNotEquals(message,crypted)
 
 if __name__ == '__main__' :
     unittest.main()
